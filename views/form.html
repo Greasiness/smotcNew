@@ -1,14 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>SCMOTC Application</title>
 <link rel="stylesheet" type="text/css" href="/css/view.css" media="all">
 <script type="text/javascript" src="/js/view.js"></script>
 <script type="text/javascript" src="/js/calendar.js"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body id="main_body" >
-	
+
 	<img id="top" src="/static/top.png" alt="">
 	<div id="form_container">
 	
@@ -375,5 +375,38 @@
 		</form>
 	</div>
 	<img id="bottom" src="/static/bottom.png" alt="">
+
+    <script>
+        function start(){
+            $.ajax({
+                url: '/userRetrieve',
+                success: function(data){
+                    document.getElementById('element_1_1').value = data.firstName;
+                    document.getElementById('element_1_2').value = data.lastName;
+                    document.getElementById('element_2').value = data.email;
+                    document.getElementById('element_3_1').value = data.address.street;
+                    document.getElementById('element_3_2').value = data.address.lineTwo;
+                    document.getElementById('element_3_3').value = data.address.city;
+                    document.getElementById('element_3_4').value = data.address.state;
+                    document.getElementById('element_3_5').value = data.address.zipCode;
+                    document.getElementById('element_3_6').value = data.address.country;
+                    document.getElementById('element_10').value = data.county;
+                    document.getElementById('element_4_1').value = data.dateOfBirth.month;
+                    document.getElementById('element_4_2').value = data.dateOfBirth.day;
+                    document.getElementById('element_4_3').value = data.dateOfBirth.year;
+                    document.getElementById('element_5_1').value = data.phone.areaCode;
+                    document.getElementById('element_5_2').value = data.phone.firstNumber;
+                    document.getElementById('element_5_3').value = data.phone.secondNumber;
+                    document.getElementById('element_6').value = data.school;
+                    document.getElementById('element_7_1').value = data.graduationDate.month;
+                    document.getElementById('element_7_2').value = data.graduationDate.day;
+                    document.getElementById('element_7_3').value = data.graduationDate.year;
+                    document.getElementById('element_8').value = data.GPA;
+                    document.getElementById('element_9').value = data.essay;
+                }
+            });
+        }
+        start();
+    </script>
 	</body>
 </html>

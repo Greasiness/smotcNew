@@ -41,10 +41,10 @@ module.exports = function(app, passport) {
     });
 	// PROFILE SECTION =========================
 	app.get('/profile', isLoggedIn, function(req, res) {
-        User.findOne({emai: req.user.email}, function(err, user){
+        User.findOne({email: req.user.email}, function(err, user){
             if(err)
                 console.log(err);
-            if(user.application == undefined)
+            if(user == undefined)
                 res.render('form.html');
             else
                 res.render('form.html', {
@@ -53,6 +53,20 @@ module.exports = function(app, passport) {
         });
 	});
 
+    app.get('/userRetrieve', function(req, res){
+        User.findOne({email: req.user.email}, function(err, user){
+            if(err)
+                console.log(err);
+            if(user.application == undefined){
+                console.log("sending null");
+                res.send(null);
+            }
+            else{
+                console.log("sending something");
+                res.send(user.application);
+            }
+        });
+    });
 	// LOGOUT ==============================
 	app.get('/logout', function(req, res) {
 		req.logout();
