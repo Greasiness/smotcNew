@@ -68,6 +68,10 @@
     <input id="submitunFav" type = "submit" style="display:none">
 </form>
 <script>
+    var name = [];
+    var name1 = [];
+    var fav = [];
+    var unfav = [];
     function favorite(tag){
         document.getElementById("emailFav").value = tag.innerText;
         document.getElementById("submitFav").click();
@@ -91,10 +95,7 @@
                     var td3 = document.createElement('td');
                     tr.appendChild(td3);
                     td3.appendChild(document.createTextNode(data[i].email));
-                    td3.ondblclick = function(){
-                        document.getElementById("emailunFav").value = td3.innerText;
-                        document.getElementById("submitunFav").click();
-                    }
+                    td3.className = "td3fav"+i;
                     var td4 = document.createElement('td');
                     td4.appendChild(document.createTextNode(data[i].application.county));
                     tr.appendChild(td4);
@@ -122,7 +123,13 @@
                     $(tr).appendTo("#container0");
                     $(".tablesorter").trigger("update");
                 }
-
+                for(var i = 0; i < data.length; ++i){
+                    //alert(data.length);
+                    //alert(document.getElementsByClassName("td3fav" + i)[0].innerHTML);
+                    //name.push("td3fav" + i);
+                    document.getElementsByClassName("td3fav"+i)[0].onclick = bindClick0(i);
+                    //alert(document.getElementsByClassName("td3fav" + i)[0].innerHTML);
+                }
             }
         });
         $.ajax({
@@ -139,10 +146,7 @@
                     var td3 = document.createElement('td');
                     tr.appendChild(td3);
                     td3.appendChild(document.createTextNode(data[i].email));
-                    td3.ondblclick = function(){
-                        document.getElementById("emailFav").value = td3.innerText;
-                        document.getElementById("submitFav").click();
-                    }
+                    td3.className = "td3all"+i;
                     var td4 = document.createElement('td');
                     td4.appendChild(document.createTextNode(data[i].application.county));
                     tr.appendChild(td4);
@@ -171,11 +175,26 @@
                     $(tr).appendTo("#container1");
                     $(".tablesorter").trigger("update");
                 }
-
+                for(var i = 0; i < data.length; ++i){
+                    //name1.push("td3all" + i);
+                    document.getElementsByClassName("td3all"+i)[0].onclick = bindClick(i);
+                }
             }
         });
     }
     start();
+    function bindClick(index){
+        return function(){
+            document.getElementById("emailFav").value = document.getElementsByClassName("td3all"+index)[0].innerHTML;
+            document.getElementById("submitFav").click();
+        }
+    }
+    function bindClick0(index){
+        return function(){
+            document.getElementById("emailunFav").value = document.getElementsByClassName("td3fav"+index)[0].innerHTML;
+            document.getElementById("submitunFav").click();
+        }
+    }
 </script>
 
 </body>

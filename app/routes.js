@@ -9,7 +9,6 @@ module.exports = function(app, passport) {
 
     app.post('/submit', function(req, res){
         var user = req.user;
-
                 user.application.firstName = req.body.element_1_1;
                 user.application.lastName = req.body.element_1_2;
                 user.application.email = req.body.element_2;
@@ -40,7 +39,7 @@ module.exports = function(app, passport) {
 
                     })
     });
-    app.get('/test', function(req, res){
+    app.get('/admin', function(req, res){
         res.render('adminHome.ejs');
     });
 	// PROFILE SECTION =========================
@@ -48,17 +47,15 @@ module.exports = function(app, passport) {
         User.findOne({email: req.user.email}, function(err, user){
             if(err)
                 console.log(err);
-            if(user == undefined)
+            if(user.type == "user")
                 res.render('form.html');
             else
-                res.render('form.html', {
-                    //application : req.flash(user.application.stringify())
-                });
+                res.redirect('/admin');
         });
 	});
 
     app.post('/favorite', function(req, res){
-        console.log(req.body.email);
+        console.log("favoring " + req.body.email);
         User.findOne({email: req.body.email}, function(err, user){
             if(err)
                 console.log(err)
@@ -66,13 +63,13 @@ module.exports = function(app, passport) {
             user.save(function(err) {
                 if (err)
                     throw err;
-                res.redirect('/test');
+                res.redirect('/admin');
 
             })
         })
     });
     app.post('/unfavorite', function(req, res){
-        console.log(req.body.email);
+        console.log("unfaving" + req.body.email);
         User.findOne({email: req.body.email}, function(err, user){
             if(err)
                 console.log(err)
@@ -80,7 +77,7 @@ module.exports = function(app, passport) {
             user.save(function(err) {
                 if (err)
                     throw err;
-                res.redirect('/test');
+                res.redirect('/admin');
 
             })
         })
@@ -90,11 +87,11 @@ module.exports = function(app, passport) {
             if(err)
                 console.log(err);
             if(user.application == undefined){
-                console.log("sending null");
+                //console.log("sending null");
                 res.send(null);
             }
             else{
-                console.log("sending something");
+                //console.log("sending something");
                 res.send(user.application);
             }
         });
@@ -104,11 +101,11 @@ module.exports = function(app, passport) {
             if(err)
                 console.log(err);
             if(users == undefined){
-                console.log("sending null");
+               // console.log("sending null");
                 res.send(null);
             }
             else{
-                console.log("sending something");
+               // console.log("sending something");
                 res.send(users);
             }
         });
