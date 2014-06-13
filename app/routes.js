@@ -32,12 +32,16 @@ module.exports = function(app, passport) {
                 user.application.graduationDate.year = req.body.element_7_3;
                 user.application.GPA = req.body.element_8;
                 user.application.essay = req.body.element_9;
+                user.favorite = false;
                 user.save(function(err) {
                     if (err)
                         throw err;
                     res.redirect('/profile');
 
                     })
+    });
+    app.get('/test', function(req, res){
+        res.render('adminHome.ejs');
     });
 	// PROFILE SECTION =========================
 	app.get('/profile', isLoggedIn, function(req, res) {
@@ -53,6 +57,34 @@ module.exports = function(app, passport) {
         });
 	});
 
+    app.post('/favorite', function(req, res){
+        console.log(req.body.email);
+        User.findOne({email: req.body.email}, function(err, user){
+            if(err)
+                console.log(err)
+            user.favorite = true;
+            user.save(function(err) {
+                if (err)
+                    throw err;
+                res.redirect('/test');
+
+            })
+        })
+    });
+    app.post('/unfavorite', function(req, res){
+        console.log(req.body.email);
+        User.findOne({email: req.body.email}, function(err, user){
+            if(err)
+                console.log(err)
+            user.favorite = false;
+            user.save(function(err) {
+                if (err)
+                    throw err;
+                res.redirect('/test');
+
+            })
+        })
+    });
     app.get('/userRetrieve', function(req, res){
         User.findOne({email: req.user.email}, function(err, user){
             if(err)
@@ -64,6 +96,34 @@ module.exports = function(app, passport) {
             else{
                 console.log("sending something");
                 res.send(user.application);
+            }
+        });
+    });
+    app.get('/allRetrieve', function(req, res){
+        User.find({favorite: false}, function(err, users){
+            if(err)
+                console.log(err);
+            if(users == undefined){
+                console.log("sending null");
+                res.send(null);
+            }
+            else{
+                console.log("sending something");
+                res.send(users);
+            }
+        });
+    });
+    app.get('/favRetrieve', function(req, res){
+        User.find({favorite: true}, function(err, users){
+            if(err)
+                console.log(err);
+            if(users == undefined){
+                console.log("sending null");
+                res.send(null);
+            }
+            else{
+                console.log("sending something");
+                res.send(users);
             }
         });
     });

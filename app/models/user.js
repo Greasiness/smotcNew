@@ -29,6 +29,7 @@ var userSchema = mongoose.Schema({
     },
     type: String,
     email: String,
+    favorite: Boolean,
     application: {
         firstName: String,
         middleName: String,

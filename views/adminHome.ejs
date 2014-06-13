@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src = "/js/tablesorter.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/tablesorter.css" media="all">
+    <script>
+        $(document).ready(function()
+                {
+                    $("#myTable").tablesorter();
+                }
+        );
+    </script>
+    <style>
+        .tablesorter .tablesorter-filter {
+            width: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1> Favorite applications </h1>
+<table id="myTable0" class="tablesorter" class="tablesorter0">
+    <thead>
+    <tr>
+        <th><div style="margin-right: 10px;">Last Name</div></th>
+        <th><div style="margin-right: 10px;">First Name</div></th>
+        <th><div style="margin-right: 10px;">Email</div></th>
+        <th><div style="margin-right: 10px;">County</div></th>
+        <th><div style="margin-right: 10px;">Address</div></th>
+        <th><div style="margin-right: 10px;">Date of Birth</div></th>
+        <th><div style="margin-right: 10px;">Phone</div></th>
+        <th><div style="margin-right: 10px;">School</div></th>
+        <th><div style="margin-right: 10px;">Graduation Date</div></th>
+        <th><div style="margin-right: 10px;">GPA</div></th>
+        <th><div style="margin-right: 10px;">Essay</div></th>
+    </tr>
+    </thead>
+    <tbody id="container0">
+    </tbody>
+</table>
+<h1> All applications </h1>
+<table id="myTable" class="tablesorter" class="tablesorter1">
+    <thead>
+    <tr>
+        <th><div style="margin-right: 10px;">Last Name</div></th>
+        <th><div style="margin-right: 10px;">First Name</div></th>
+        <th><div style="margin-right: 10px;">Email</div></th>
+        <th><div style="margin-right: 10px;">County</div></th>
+        <th><div style="margin-right: 10px;">Address</div></th>
+        <th><div style="margin-right: 10px;">Date of Birth</div></th>
+        <th><div style="margin-right: 10px;">Phone</div></th>
+        <th><div style="margin-right: 10px;">School</div></th>
+        <th><div style="margin-right: 10px;">Graduation Date</div></th>
+        <th><div style="margin-right: 10px;">GPA</div></th>
+        <th><div style="margin-right: 10px;">Essay</div></th>
+    </tr>
+    </thead>
+    <tbody id="container1">
+    </tbody>
+</table>
+<form action = "/favorite" method ="post" style="display:none">
+    <input id="emailFav" type="text" name = "email" style="display:none">
+    <input id="submitFav" type = "submit" style="display:none">
+</form>
+<form action = "/unfavorite" method ="post" style="display:none">
+    <input id="emailunFav" type="text" name = "email" style="display:none">
+    <input id="submitunFav" type = "submit" style="display:none">
+</form>
+<script>
+    function favorite(tag){
+        document.getElementById("emailFav").value = tag.innerText;
+        document.getElementById("submitFav").click();
+    }
+    function unfavorite(tag){
+        document.getElementById("emailunFav").value = tag.innerText;
+        document.getElementById("submitunFav").click();
+    }
+    function start(){
+        $.ajax({
+            url: '/favRetrieve',
+            success: function(data){
+                for(var i = 0; i < data.length; ++i){
+                    var tr = document.createElement('tr');
+                    var td = document.createElement('td');
+                    tr.appendChild(td);
+                    td.appendChild(document.createTextNode(data[i].application.firstName));
+                    var td2 = document.createElement('td');
+                    tr.appendChild(td2);
+                    td2.appendChild(document.createTextNode(data[i].application.lastName));
+                    var td3 = document.createElement('td');
+                    tr.appendChild(td3);
+                    td3.appendChild(document.createTextNode(data[i].email));
+                    td3.ondblclick = function(){
+                        document.getElementById("emailunFav").value = td3.innerText;
+                        document.getElementById("submitunFav").click();
+                    }
+                    var td4 = document.createElement('td');
+                    td4.appendChild(document.createTextNode(data[i].application.county));
+                    tr.appendChild(td4);
+                    var td5 = document.createElement('td');
+                    tr.appendChild(td5);
+                    td5.appendChild(document.createTextNode(data[i].application.address.street + " " + data[i].application.address.lineTwo + " " + data[i].application.address.city + " " + data[i].application.address.state + " " + data[i].application.address.zipCode + " " + data[i].application.address.country));
+                    var td6 = document.createElement('td');
+                    tr.appendChild(td6);
+                    td6.appendChild(document.createTextNode(data[i].application.dateOfBirth.month + "/" + data[i].application.dateOfBirth.day + "/" + data[i].application.dateOfBirth.year));
+                    var td7 = document.createElement('td');
+                    tr.appendChild(td7);
+                    td7.appendChild(document.createTextNode(data[i].application.phone.areaCode + "-" + data[i].application.phone.firstNumber + "-" + data[i].application.phone.secondNumber));
+                    var td8 = document.createElement('td');
+                    tr.appendChild(td8);
+                    td8.appendChild(document.createTextNode(data[i].application.school));
+                    var td9 = document.createElement('td');
+                    tr.appendChild(td9);
+                    td9.appendChild(document.createTextNode(data[i].application.graduationDate.month + "/" + data[i].application.graduationDate.day + "/" + data[i].application.graduationDate.year));
+                    var td10 = document.createElement('td');
+                    tr.appendChild(td10);
+                    td10.appendChild(document.createTextNode(data[i].application.GPA));
+                    var td11 = document.createElement('td');
+                    tr.appendChild(td11);
+                    td11.appendChild(document.createTextNode(data[i].application.essay));
+                    $(tr).appendTo("#container0");
+                    $(".tablesorter").trigger("update");
+                }
+
+            }
+        });
+        $.ajax({
+            url: '/allRetrieve',
+            success: function(data){
+                for(var i = 0; i < data.length; ++i){
+                    var tr = document.createElement('tr');
+                    var td = document.createElement('td');
+                    tr.appendChild(td);
+                    td.appendChild(document.createTextNode(data[i].application.firstName));
+                    var td2 = document.createElement('td');
+                    tr.appendChild(td2);
+                    td2.appendChild(document.createTextNode(data[i].application.lastName));
+                    var td3 = document.createElement('td');
+                    tr.appendChild(td3);
+                    td3.appendChild(document.createTextNode(data[i].email));
+                    td3.ondblclick = function(){
+                        document.getElementById("emailFav").value = td3.innerText;
+                        document.getElementById("submitFav").click();
+                    }
+                    var td4 = document.createElement('td');
+                    td4.appendChild(document.createTextNode(data[i].application.county));
+                    tr.appendChild(td4);
+                    var td5 = document.createElement('td');
+                    tr.appendChild(td5);
+                    td5.appendChild(document.createTextNode(data[i].application.address.street + " " + data[i].application.address.lineTwo + " " + data[i].application.address.city + " " + data[i].application.address.state + " " + data[i].application.address.zipCode + " " + data[i].application.address.country));
+                    var td6 = document.createElement('td');
+                    tr.appendChild(td6);
+                    td6.appendChild(document.createTextNode(data[i].application.dateOfBirth.month + "/" + data[i].application.dateOfBirth.day + "/" + data[i].application.dateOfBirth.year));
+                    var td7 = document.createElement('td');
+                    tr.appendChild(td7);
+                    td7.appendChild(document.createTextNode(data[i].application.phone.areaCode + "-" + data[i].application.phone.firstNumber + "-" + data[i].application.phone.secondNumber));
+                    var td8 = document.createElement('td');
+                    tr.appendChild(td8);
+                    td8.appendChild(document.createTextNode(data[i].application.school));
+                    var td9 = document.createElement('td');
+                    tr.appendChild(td9);
+                    td9.appendChild(document.createTextNode(data[i].application.graduationDate.month + "/" + data[i].application.graduationDate.day + "/" + data[i].application.graduationDate.year));
+                    var td10 = document.createElement('td');
+                    tr.appendChild(td10);
+                    td10.appendChild(document.createTextNode(data[i].application.GPA));
+                    var td11 = document.createElement('td');
+                    tr.appendChild(td11);
+                    td11.appendChild(document.createTextNode(data[i].application.essay));
+
+                    $(tr).appendTo("#container1");
+                    $(".tablesorter").trigger("update");
+                }
+
+            }
+        });
+    }
+    start();
+</script>
+
+</body>
+</html>

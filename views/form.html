@@ -269,10 +269,10 @@
 		<div>
 		<select class="element select medium" id="element_10" name="element_10"> 
 			<option value="" selected="selected"></option>
-<option value="1" >Los Angeles County</option>
-<option value="2" >Orange, San Diego, Imperial County</option>
-<option value="3" >San Bernardino, Clark, Inyo, Riverside County</option>
-<option value="4" >Fresno, Kern, Kings, San Luis Obispo, Santa Barbara, Tulare, Ventura County</option>
+<option value="Los Angeles County" >Los Angeles County</option>
+<option value="Orange, San Diego, Imperial County" >Orange, San Diego, Imperial County</option>
+<option value="San Bernardino, Clark, Inyo, Riverside County" >San Bernardino, Clark, Inyo, Riverside County</option>
+<option value="Fresno, Kern, Kings, San Luis Obispo, Santa Barbara, Tulare, Ventura County" >Fresno, Kern, Kings, San Luis Obispo, Santa Barbara, Tulare, Ventura County</option>
 
 		</select>
 		</div> 
@@ -381,27 +381,49 @@
             $.ajax({
                 url: '/userRetrieve',
                 success: function(data){
+                    if(data.firstName)
                     document.getElementById('element_1_1').value = data.firstName;
+                    if(data.lastName)
                     document.getElementById('element_1_2').value = data.lastName;
+                    if(data.email)
                     document.getElementById('element_2').value = data.email;
+                    if(data.address.street)
                     document.getElementById('element_3_1').value = data.address.street;
+                    if(data.address.lineTwo)
                     document.getElementById('element_3_2').value = data.address.lineTwo;
+                    if(data.address.city)
                     document.getElementById('element_3_3').value = data.address.city;
+                    if(data.address.state)
                     document.getElementById('element_3_4').value = data.address.state;
+                    if(data.address.zipCode)
                     document.getElementById('element_3_5').value = data.address.zipCode;
+                    if(data.address.country)
                     document.getElementById('element_3_6').value = data.address.country;
+                    if(data.county)
                     document.getElementById('element_10').value = data.county;
+                    if(data.dateOfBirth.month)
                     document.getElementById('element_4_1').value = data.dateOfBirth.month;
+                    if(data.dateOfBirth.day)
                     document.getElementById('element_4_2').value = data.dateOfBirth.day;
+                    if(data.dateOfBirth.year)
                     document.getElementById('element_4_3').value = data.dateOfBirth.year;
+                    if(data.phone.areaCode)
                     document.getElementById('element_5_1').value = data.phone.areaCode;
+                    if(data.phone.firstNumber)
                     document.getElementById('element_5_2').value = data.phone.firstNumber;
+                    if(data.phone.secondNumber)
                     document.getElementById('element_5_3').value = data.phone.secondNumber;
+                    if(data.school)
                     document.getElementById('element_6').value = data.school;
+                    if(data.graduationDate.month)
                     document.getElementById('element_7_1').value = data.graduationDate.month;
+                    if(data.graduationDate.day)
                     document.getElementById('element_7_2').value = data.graduationDate.day;
+                    if(data.graduationDate.year)
                     document.getElementById('element_7_3').value = data.graduationDate.year;
+                    if(data.GPA)
                     document.getElementById('element_8').value = data.GPA;
+                    if(data.essay)
                     document.getElementById('element_9').value = data.essay;
                 }
             });
